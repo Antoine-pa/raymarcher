@@ -27,13 +27,13 @@ const vec3 POS_S1 = vec3(0.0);
 const float SIZE_S1 = 0.5;
 
 //red ball
-const vec3 COLOR_S2 = vec3(0.3, 0.04, 0.06);
+const vec3 COLOR_S2 = vec3(0.6, 0.0, 0.06);
 const vec3 POS_S2 = vec3(0.1, 0.45, -0.1);
 const float SIZE_S2 = 0.2;
 
 //yellow torus
 const vec3 COLOR_T = vec3(1.0, 0.4, 0.0);
-const vec3 POS_T = vec3(0.0, 0.2, 0.1);
+const vec3 POS_T = vec3(0.0, 0.5, 0.1);
 const vec3 ROT_T = normalize(vec3(0.0, 0.2, 0.5));
 const float RAY_T = 0.8;
 const float THICKNESS_T = 0.1;
@@ -135,16 +135,19 @@ vec4 scene(vec3 p){
     
     vec4 S1 = Sphere(p - POS_S1, SIZE_S1, COLOR_S1);
     vec4 S2 = Sphere(p - POS_S2, SIZE_S2, COLOR_S2);
-    S1 = substract(S1, S2);
-    obj = minDist(obj, S1);
-    
+    S2.rgb = S2.rgb*sin(p)*(sin(S2.a)+2.);
+    S2 = substract(S2, S1);
+    obj = minDist(obj, S2);
     vec4 T = Torus(p - POS_T, ROT_T, RAY_T, THICKNESS_T, COLOR_T);
+    T.rgb = T.rgb*sin(p)*(sin(T.a)+3.);
     obj = minDist(obj, T);
     
     vec4 C = Cylender(p - POS_C, ROT_C, SIZE_C, SMOOTH_C, COLOR_C);
+    C.rgb = C.rgb*sin(p)*(sin(C.a)+2.);
     obj = minDist(obj, C);
     
     vec4 B = Box(p - POS_B, ROT_B, SIZE_B, SMOOTH_B, COLOR_B);
+    B.rgb = B.rgb*sin(p)*(sin(B.a)+2.);
     obj = minDist(obj, B);
     
     return obj;
